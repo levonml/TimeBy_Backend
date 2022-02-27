@@ -1,24 +1,30 @@
 import express from "express";
-import unknownEndpoint from "./middlewares/unknownEndpoint.js";
+import dotenv from 'dotenv'
+import mongoose from "mongoose";
+import unknownEndpoint from "./utils/middlewares.js";
+import Note from "./models/userModel.js";
+ 
+dotenv.config()
 
 const app = express()
 
 app.use(express.json())
-app.get("/", (request, response, next) => {
-	const note = [
-		{
-			"hello1": "1", 
-			"hello2": "2", 
-			"hello3": "3"
-		}
-	]
+
+app.get("/", async (request, response, next) => {
+	const note = await Note.find({})
 	response.json(note)
 })
- app.post("/", (request, response, next) => {
+ app.post("/", async (request, response, next) => {
 	const a = request.body
 	console.log("body", a)
-	response.json(a)
+    const note = new Note({
+	login: a.login,
+	password: a.password
+})
+const savedNote = await note.save()
+mongoose.connection.close()
+	response.json(savedNote)
 })
 app.use(unknownEndpoint)
-const PORT = 3000
+const PORT = process.env.PORT
 app.listen(PORT, () => console.log("application is running on the port ", PORT))
