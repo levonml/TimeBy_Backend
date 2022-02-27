@@ -1,9 +1,9 @@
 const errorHandler = (error, req, res, next) => {
-	return res.status(400).json({ error: error.message })
-	next(error)
-}
+  res.status(400).json({ error: error.message });
+  next();
+};
 
-const unknownEndpoint = (req, res) =>{
-res.status(404).send({error:"unknown endpoint"})
-}
-export default unknownEndpoint
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' });
+};
+export default { unknownEndpoint, errorHandler };
