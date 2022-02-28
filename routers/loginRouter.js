@@ -1,31 +1,22 @@
 import express from "express";
 
-import Login from '../models/userModel.js';
+//import Login from '../models/loginModel.js';
+import User from "../models/userModel.js";
 
 const loginRouter = express.Router()
 
-loginRouter.get('/', async (request, response, next) => {
-	try {
-	  const note = await Login.find({});
-	  console.log('data from controller', note);
-	  response.json(note);
-	} catch (err) { next(err); }
-  });
   loginRouter.post('/', async (request, response, next) => {
 	try {
-	  const { body } = request;
-	  const note = new Login({
-		login: body.login,
-		password: body.password,
-	  });
-	  const savedNote = await note.save();
-	  response.json(savedNote);
+	  const body = request.body;
+	  const currentUser = await User.find({login: body.login})
+	 // console.log("User = ", currentUser[0]);
+	  console.log("body = ", body);
+	  let loggedUser = null
+	  if (currentUser[0] && currentUser[0].password === body.password && currentUser[0].login === body.login){
+		loggedUser = {LoggedUSerIs: currentUser[0].name}
+	  } else  loggedUser = {ERROR: "wrong passeord"}
+	  response.json(loggedUser);
 	} catch (err) { next(err); }
   });
-  loginRouter.delete('/', async (request, response, next) => {
-	try {
-	  const ret = await Login.deleteMany();
-	  response.status(204).json(ret);
-	} catch (error) { next(error); }
-  });
+ 
   export default loginRouter

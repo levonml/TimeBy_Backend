@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 // import mongoose from 'mongoose';
 import loginRouter from './routers/loginRouter.js';
+import userRouter from './routers/userRouter.js';
 import middleware from './utils/middlewares.js';
 
 dotenv.config();
@@ -9,7 +10,8 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use("/", loginRouter)
+app.use("/login", loginRouter)
+app.use("/signup", userRouter)
 
 app.use(middleware.errorHandler);
 
