@@ -1,5 +1,5 @@
 import express from "express";
-
+import bcrypt from 'bcrypt'
 import User from '../models/userModel.js';
 
 const userRouter = express.Router()
@@ -14,14 +14,16 @@ userRouter.get('/', async (request, response, next) => {
   userRouter.post('/', async (request, response, next) => {
 	try {
 	  const body  = request.body;
+	  const saltRounds = 10
+      const passwordHash = await bcrypt.hash(body.password, saltRounds)
 	  const newUser = new User({
 		name : body.name,
 		surname : body.surname,
 		login: body.login,
-		password: body.password,
+		password: passwordHash,
 	  });
 	  const savedUser = await newUser.save();
-	  response.json(savedUser);
+	  response.status(201).json(savedUser);
 	} catch (err) { next(err); }
   });
   userRouter.delete('/', async (request, response, next) => {
