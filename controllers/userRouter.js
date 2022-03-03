@@ -6,7 +6,7 @@ const userRouter = express.Router()
 
 userRouter.get('/', async (request, response, next) => {
 	try {
-	  const allUsers = await User.find({});
+	  const allUsers = await User.find({}).populate('notes', {text:1, image:1});
 	  console.log('data from controller', allUsers);
 	  response.json(allUsers);
 	} catch (err) { next(err); }
@@ -19,7 +19,7 @@ userRouter.get('/', async (request, response, next) => {
 	  const newUser = new User({
 		name : body.name,
 		surname : body.surname,
-		login: body.login,
+		userName: body.userName,
 		password: passwordHash,
 	  });
 	  const savedUser = await newUser.save();
