@@ -8,7 +8,7 @@ const loginRouter = express.Router()
   loginRouter.post('/', async (request, response, next) => {
 	try {
 	  const body = request.body;
-	  const currentUser = await User.findOne({login: body.login})
+	  const currentUser = await User.findOne({userName: body.login})
 	  console.log("currentUser = ", currentUser);
 	  console.log("body = ", body);
 	  const passwordCorrect = currentUser === null 
@@ -18,12 +18,13 @@ const loginRouter = express.Router()
 		response.status(401).json({ERROR: "wrong password or userName"});
 	  } 
       const userForToken = {
-		  login: currentUser.login,
+		  userName: currentUser.userName,
 		  id: currentUser._id
 	  } 
       const token = jwt.sign(userForToken, process.env.SECRET)
 	  console.log("the token issss", token)
-	  response.status(200).json({User: currentUser.name, Login: currentUser.login, Token: token  });
+	  console.log("the user issss", currentUser.userName)
+	  response.status(200).json({User: currentUser.name, Username: currentUser.userName, Token: token  });
 		
 	 
 	} catch (err) { next(err); }

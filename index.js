@@ -16,7 +16,6 @@ app.use("/signup", userRouter)
 app.use("/note", noteRouter)
 
 app.use(middleware.errorHandler);
-
 app.use(middleware.unknownEndpoint);
-const { PORT } = process.env;
+const PORT= process.env.PORT || 3001;
 app.listen(PORT, () => console.log('application is running on the port ', PORT));
