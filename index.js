@@ -14,6 +14,7 @@ app.use(express.json());
 app.use("/login", loginRouter)
 app.use("/signup", userRouter)
 app.use("/note", noteRouter)
+app.use(express.static('build'))
 
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
