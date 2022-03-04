@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=developement nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-	"build:ui": "rm -rf build && cd ../timeby/ && npm run build && cp -r build ../timebyBackend",
+    "build:ui": "rm -rf build && cd ../timeby/ && npm run build && cp -r build ../timebyBackend",
     "deploy": "git push heroku main"
   },
   "author": "",
@@ -22,6 +22,7 @@
     "mongoose": "^6.2.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^8.10.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
