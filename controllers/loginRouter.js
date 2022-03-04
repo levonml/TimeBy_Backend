@@ -9,8 +9,6 @@ const loginRouter = express.Router()
 	try {
 	  const body = request.body;
 	  const currentUser = await User.findOne({userName: body.login})
-	  console.log("currentUser = ", currentUser);
-	  console.log("body = ", body);
 	  const passwordCorrect = currentUser === null 
 	    ? false 
 		: await bcrypt.compare(body.password, currentUser.password )
@@ -22,8 +20,6 @@ const loginRouter = express.Router()
 		  id: currentUser._id
 	  } 
       const token = jwt.sign(userForToken, process.env.SECRET)
-	  console.log("the token issss", token)
-	  console.log("the user issss", currentUser.userName)
 	  response.status(200).json({User: currentUser.name, Username: currentUser.userName, Token: token  });
 		
 	 

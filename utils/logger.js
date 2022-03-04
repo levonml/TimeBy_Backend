@@ -1,3 +1,3 @@
-const logger = (params) => {
-	console.log("");
+const logger = (...params) => {
+	console.log(...params);
 }

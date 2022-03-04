@@ -18,5 +18,5 @@ app.use(express.static('build'))
 
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
-const PORT= process.env.PORT || 3001;
+const PORT= process.env.PORT;
 app.listen(PORT, () => console.log('application is running on the port ', PORT));
