@@ -9,7 +9,8 @@
     "dev": "cross-env NODE_ENV=developement nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../timeby/ && npm run build && cp -r build ../timebyBackend",
-    "deploy": "git push heroku main"
+    "deploy": "git push heroku main",
+	"deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy"
   },
   "author": "",
   "license": "ISC",
