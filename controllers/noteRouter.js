@@ -5,19 +5,28 @@ import Note from "../models/noteModel.js";
 
 const noteRouter = express.Router()
 
-noteRouter.get('/', async (request, response, next) => {
-	try {
-	  const allNotes = await Note.find({}).populate('user', { userName: 1, name: 1, surname: 1});
-	  response.json(allNotes);
-	} catch (err) { next(err); }
-  });
-  const getTokenFrom = request => {
+const getTokenFrom = request => {
 	const authorization = request.get('authorization')
 	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
 	  return authorization.substring(7)
 	}
 	return null
   }
+noteRouter.get('/', async (request, response, next) => {
+	try {
+	  const allNotes = await Note.find({}).populate('user', { userName: 1, name: 1, surname: 1});
+	  response.json(allNotes);
+	} catch (err) { next(err); }
+  });
+  /* noteRouter.get('/:id', async (request, response, next) => {
+	  const id = request.params
+	  console.log("params ====", id.id);
+	try {
+	  const oneNotes = await Note.findById(id.id).populate('user', { userName: 1, name: 1, surname: 1});
+	  response.json(oneNotes);
+	} catch (err) { next(err); }
+  }); */
+ 
   noteRouter.post('/', async (request, response, next) => {
 	try {
 		const body = request.body

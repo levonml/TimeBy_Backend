@@ -11,6 +11,14 @@ userRouter.get('/', async (request, response, next) => {
 	  response.json(allUsers);
 	} catch (err) { next(err); }
   });
+  userRouter.get('/:id', async (request, response, next) => {
+	const id = request.params
+	console.log("params ====", id.id);
+  try {
+	const oneNotes = await User.findOne({userName:id.id}).populate('notes', {text:1, image:1});
+	response.json(oneNotes);
+  } catch (err) { next(err); }
+});
   userRouter.post('/', async (request, response, next) => {
 	try {
 	  const body  = request.body;
