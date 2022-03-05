@@ -17,6 +17,8 @@ userRouter.get('/', async (request, response, next) => {
   try {
 	const oneNotes = await User.findOne({userName:id.id}).populate('notes', {text:1, image:1});
 	response.json(oneNotes);
+	console.log("resonseis", oneNotes
+	)
   } catch (err) { next(err); }
 });
   userRouter.post('/', async (request, response, next) => {

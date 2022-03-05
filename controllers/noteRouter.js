@@ -18,14 +18,17 @@ noteRouter.get('/', async (request, response, next) => {
 	  response.json(allNotes);
 	} catch (err) { next(err); }
   });
-  /* noteRouter.get('/:id', async (request, response, next) => {
+   /* noteRouter.get('/:id', async (request, response, next) => {
 	  const id = request.params
 	  console.log("params ====", id.id);
 	try {
+		console.log("resonseis before")
 	  const oneNotes = await Note.findById(id.id).populate('user', { userName: 1, name: 1, surname: 1});
+	  console.log("resonseis", oneNotes)
+
 	  response.json(oneNotes);
 	} catch (err) { next(err); }
-  }); */
+  });  */
  
   noteRouter.post('/', async (request, response, next) => {
 	try {
