@@ -10,7 +10,10 @@ import middleware from './utils/middlewares.js';
 import config from './utils/config.js';
 import logger from './utils/logger.js';
 import  path  from 'path';
-//import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -31,7 +34,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 console.log("check", isProduction);
 isProduction &&
   app.get("*", function (request, response) {
-    response.sendFile(path.resolve("./build", "index.html"));
+    response.sendFile(path.resolve(__dirname, "./build", "index.html"));
   });
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
