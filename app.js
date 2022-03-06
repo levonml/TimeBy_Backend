@@ -28,7 +28,7 @@ app.use("/api/notes", noteRouter)
 app.use(express.static('build'))
 const isProduction = process.env.NODE_ENV === 'production'
 console.log("check", isProduction);
-!isProduction &&
+isProduction &&
   app.get("*", function (request, response) {
     response.sendFile(path.resolve(__dirname, "build", "index.html"));
   });
