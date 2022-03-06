@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 
 import loginRouter from './controllers/loginRouter.js';
-import userRouter from './controllers/signupRouter.js';
+import userRouter from './controllers/userRouter.js';
 import noteRouter from './controllers/noteRouter.js';
 import signupRouter from './controllers/signupRouter.js';
 import middleware from './utils/middlewares.js';
