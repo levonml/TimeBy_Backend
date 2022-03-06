@@ -21,13 +21,19 @@ mongoose
 	);
 app.use(cors())
 app.use(express.json());
-app.use("/login", loginRouter)
-app.use("/users", userRouter)
-app.use("/signup", signupRouter)
-app.use("/notes", noteRouter)
+app.use("/api/login", loginRouter)
+app.use("/api/users", userRouter)
+app.use("/api/signup", signupRouter)
+app.use("/api/notes", noteRouter)
 app.use(express.static('build'))
-
+const isProduction = process.env.NODE_ENV === 'production'
+console.log("check", isProduction);
+!isProduction &&
+  app.get("*", function (request, response) {
+    response.sendFile(path.resolve(__dirname, "build", "index.html"));
+  });
 app.use(middleware.errorHandler);
-//app.use(middleware.unknownEndpoint);
+app.use(middleware.unknownEndpoint);
+
 
 export default app
