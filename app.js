@@ -9,7 +9,8 @@ import signupRouter from './controllers/signupRouter.js';
 import middleware from './utils/middlewares.js';
 import config from './utils/config.js';
 import logger from './utils/logger.js';
-
+import  path  from 'path';
+//import { dirname } from 'path';
 
 const app = express();
 
@@ -25,12 +26,12 @@ app.use("/api/login", loginRouter)
 app.use("/api/users", userRouter)
 app.use("/api/signup", signupRouter)
 app.use("/api/notes", noteRouter)
-app.use(express.static('build'))
+app.use(express.static('./build'))
 const isProduction = process.env.NODE_ENV === 'production'
 console.log("check", isProduction);
 isProduction &&
   app.get("*", function (request, response) {
-    response.sendFile(path.resolve(__dirname, "build", "index.html"));
+    response.sendFile(path.resolve("./build", "index.html"));
   });
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
