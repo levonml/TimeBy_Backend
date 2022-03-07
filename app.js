@@ -30,12 +30,12 @@ app.use("/api/users", userRouter)
 app.use("/api/signup", signupRouter)
 app.use("/api/notes", noteRouter)
 app.use(express.static('./build'))
-const isProduction = process.env.NODE_ENV === 'production'
+ const isProduction = process.env.NODE_ENV === 'production'
 console.log("check", isProduction);
 isProduction &&
   app.get("*", function (request, response) {
     response.sendFile(path.resolve(__dirname, "./build", "index.html"));
-  });
+  }); 
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
 
