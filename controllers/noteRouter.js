@@ -7,6 +7,8 @@ const noteRouter = express.Router()
 
 const getTokenFrom = request => {
 	const authorization = request.get('authorization')
+	console.log("---------------------------", authorization)
+
 	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
 	  return authorization.substring(7)
 	}
@@ -33,7 +35,10 @@ noteRouter.get('/', async (request, response, next) => {
   noteRouter.post('/', async (request, response, next) => {
 	try {
 		const body = request.body
+
 		const token = getTokenFrom(request)
+		console.log("ddddddddddddddddddsssssssssss", token)
+
 		const decodedToken = jwt.verify(token, process.env.SECRET)
 		if (!decodedToken.id) {
 		  return response.status(401).json({ error: 'token missing or invalid' })
