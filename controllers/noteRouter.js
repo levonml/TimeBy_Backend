@@ -7,8 +7,6 @@ const noteRouter = express.Router()
 
 const getTokenFrom = request => {
 	const authorization = request.get('authorization')
-	console.log("---------------------------", authorization)
-
 	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
 	  return authorization.substring(7)
 	}
@@ -62,4 +60,15 @@ noteRouter.get('/', async (request, response, next) => {
 	  response.status(204).json(ret);
 	} catch (error) { next(error); }
   });
+  noteRouter.delete('/:id', async (request, response, next) => {
+	const id = request.params
+	console.log("params ====", id);
+  try {
+	  console.log("resonseis before")
+	const oneNotes = await Note.findByIdAndRemove(id.id)
+	console.log("resonseis", oneNotes)
+
+	response.json(oneNotes);
+  } catch (err) { next(err); }
+})
   export default noteRouter
