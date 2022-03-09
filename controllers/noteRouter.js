@@ -55,19 +55,21 @@ noteRouter.get('/', async (request, response, next) => {
 });
 	noteRouter.put('/:id', async (request, response, next) => {
 		console.log('hi from put "/" before try')
+		console.log("params = id - ", request.params.id)
 		try {
 			console.log('hi from put "/:id"')
-			const year = params.id
-			console.log("pathoooooooooo", year)
+			const year = request.params.id
 			const body = request.body
-			console.log("bodyyyyyyyyyyyy", body)
+			console.log("bodyyy", body.text)
+
 			const token = getTokenFrom(request)
 			const decodedToken = jwt.verify(token, process.env.SECRET)
 			if (!decodedToken.id) {
 			  return response.status(401).json({ error: 'token missing or invalid' })
 			}
 			//const currentUser = await User.updateOne({year: year},{$push:{text: body.year}})
-			const currentNote = await Note.updateOne({year: year},{$push:{text: body.text}})
+			const currentNote = await Note.updateOne({'year': year},{$push:{'text': body.text}})
+			console.log("returned note", currentNote)
 			
 			response.status(201).end
 		  //const savedNote = await newNote.save();
