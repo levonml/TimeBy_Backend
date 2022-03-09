@@ -6,19 +6,19 @@ const userRouter = express.Router()
 
 userRouter.get('/', async (request, response, next) => {
 	try {
-	  const allUsers = await User.find({}).populate('notes', {text:1, image:1});
+	  const allUsers = await User.find({}).populate('notes', {year:1, text:1, image:1});
 	  console.log('data from controller', allUsers);
 	  response.json(allUsers);
 	} catch (err) { next(err); }
   });
 userRouter.get('/:id', async (request, response, next) => {
 	const id = request.params
-	console.log("params ====", id.id);
+	//console.log("params ====", id.id);
   try {
-	const oneNotes = await User.findOne({userName:id.id}).populate('notes', {text:1, image:1});
+	const oneNotes = await User.findOne({userName:id.id}).populate('notes', {year:1, text:1, image:1});
 	response.json(oneNotes);
-	console.log("resonseis", oneNotes
-	)
+	//console.log("resonseis", oneNotes
+	
   } catch (err) { next(err); }
 });
 userRouter.delete('/', async (request, response, next) => {
