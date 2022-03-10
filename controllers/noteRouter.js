@@ -2,6 +2,7 @@ import express from "express";
 import jwt from 'jsonwebtoken'
 import User from '../models/userModel.js';
 import Note from "../models/noteModel.js";
+import { text } from "express";
 
 const noteRouter = express.Router()
 
@@ -67,17 +68,21 @@ noteRouter.get('/', async (request, response, next) => {
 			if (!decodedToken.id) {
 			  return response.status(401).json({ error: 'token missing or invalid' })
 			}
-			//const currentUser = await User.updateOne({year: year},{$push:{text: body.year}})
-			const currentNote = await Note.updateOne({'year': year},{$push:{'text': body.text}})
-			console.log("returned note", currentNote)
-			
-			response.status(201).end
-		  //const savedNote = await newNote.save();
-		  //const updatedUser = currentUser.notes.concat(savedNote._id)
-		  //await currentUser.update({notes:updatedUser})
-		  //response.status(201).json(savedNote);
+			const res = await Note.findOneAndUpdate({'year': year},{$push:{'text': body.text}})
+			response.status(201).json(res)
 		} catch (err) { next(err); console.log('hi from put "/:id" error')}
 	  });
+	  noteRouter.put('/:id/:key', async (request, response, next) => {
+		const params = request.params
+		const key= params.key
+		try {
+		const obj = await Note.findById(params.id)
+		const textModified = obj.text
+		textModified.splice(key, 1)
+		const oneNotes = await Note.findByIdAndUpdate(params.id, {$set: {'text': textModified}})
+		response.json(oneNotes);
+	  } catch (err) { next(err); }
+	})
 	  noteRouter.delete('/', async (request, response, next) => {
 		try {
 		  const ret = await Note.deleteMany();
@@ -93,11 +98,8 @@ noteRouter.get('/', async (request, response, next) => {
   
   noteRouter.delete('/:id', async (request, response, next) => {
 	const id = request.params
-	//console.log("params ====", id);
   try {
-	  //console.log("resonseis before")
 	const oneNotes = await Note.findByIdAndRemove(id.id)
-	//console.log("resonseis", oneNotes)
 
 	response.json(oneNotes);
   } catch (err) { next(err); }
