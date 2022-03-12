@@ -54,7 +54,7 @@ noteRouter.get('/', async (request, response, next) => {
 	  response.status(201).json(savedNote);
 	} catch (err) { next(err); }
 });
-	noteRouter.put('/:id', async (request, response, next) => {
+	noteRouter.put('/:user/:id', async (request, response, next) => {
 		console.log('hi from put "/" before try')
 		console.log("params = id - ", request.params.id)
 		try {
@@ -69,6 +69,7 @@ noteRouter.get('/', async (request, response, next) => {
 			  return response.status(401).json({ error: 'token missing or invalid' })
 			}
 			const res = await Note.findOneAndUpdate({'year': year},{$push:{'text': body.text}})
+			console.log("result from backend", res)
 			response.status(201).json(res)
 		} catch (err) { next(err); console.log('hi from put "/:id" error')}
 	  });
@@ -79,7 +80,7 @@ noteRouter.get('/', async (request, response, next) => {
 		const obj = await Note.findById(params.id)
 		const textModified = obj.text
 		textModified.splice(key, 1)
-		const oneNotes = await Note.findByIdAndUpdate(params.id, {$set: {'text': textModified}})
+		const oneNotes = await Note.findOneAndUpdate({_id:params.id}, {$set: {'text': textModified}}, {new: true})
 		response.json(oneNotes);
 	  } catch (err) { next(err); }
 	})
