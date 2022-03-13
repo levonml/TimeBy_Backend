@@ -54,33 +54,35 @@ noteRouter.get('/', async (request, response, next) => {
 	  response.status(201).json(savedNote);
 	} catch (err) { next(err); }
 });
-	noteRouter.put('/:user/:id', async (request, response, next) => {
-		console.log('hi from put "/" before try')
-		console.log("params = id - ", request.params.id)
+	noteRouter.put('/addtext/:yearId/:user/:year', async (request, response, next) => {
 		try {
-			console.log('hi from put "/:id"')
-			const year = request.params.id
+			const year = request.params.year
+			const user = request.params.user
+			const yearId = request.params.yearId
+
 			const body = request.body
-			console.log("bodyyy", body.text)
 
 			const token = getTokenFrom(request)
 			const decodedToken = jwt.verify(token, process.env.SECRET)
 			if (!decodedToken.id) {
 			  return response.status(401).json({ error: 'token missing or invalid' })
 			}
-			const res = await Note.findOneAndUpdate({'year': year},{$push:{'text': body.text}})
+
+			const res = await Note.findOneAndUpdate({'_id': yearId},{$push:{'text': body.text}}, {new:true})
 			console.log("result from backend", res)
 			response.status(201).json(res)
 		} catch (err) { next(err); console.log('hi from put "/:id" error')}
 	  });
-	  noteRouter.put('/:id/:key', async (request, response, next) => {
+	  noteRouter.put('/removetext/:yearId/:key', async (request, response, next) => {
 		const params = request.params
 		const key= params.key
+		const yearId =params.yearId
 		try {
-		const obj = await Note.findById(params.id)
+		const obj = await Note.findById(yearId)
 		const textModified = obj.text
 		textModified.splice(key, 1)
-		const oneNotes = await Note.findOneAndUpdate({_id:params.id}, {$set: {'text': textModified}}, {new: true})
+		const oneNotes = await Note.findOneAndUpdate({_id:yearId}, {$set: {'text': textModified}}, {new: true})
+		console.log("deleted response =", oneNotes)
 		response.json(oneNotes);
 	  } catch (err) { next(err); }
 	})

@@ -20,7 +20,7 @@ const loginRouter = express.Router()
 		  id: currentUser._id
 	  } 
       const token = jwt.sign(userForToken, process.env.SECRET)
-	  response.status(200).json({User: currentUser.name, Username: currentUser.userName, Token: token  });
+	  response.status(200).json({User: currentUser.name, Username: currentUser.userName, Token: token, id:currentUser._id  });
 		
 	 
 	} catch (err) { next(err); }
