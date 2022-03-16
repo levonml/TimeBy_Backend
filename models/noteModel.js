@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 
 const noteSchema = new mongoose.Schema({
-  year: {type:String},
+  year: {
+	  type:String,
+	  required: true,
+	  unique:true
+	},
   text: [{type: String}],
   image: {type: String},
   user: [

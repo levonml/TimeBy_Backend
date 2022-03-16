@@ -99,10 +99,10 @@ noteRouter.get('/', async (request, response, next) => {
 	} catch (error) { next(error); }
   });
   
-  noteRouter.delete('/:id', async (request, response, next) => {
-	const id = request.params
+  noteRouter.delete('/deleteOneYear/:id', async (request, response, next) => {
+	const id = request.params.id
   try {
-	const oneNotes = await Note.findByIdAndRemove(id.id)
+	const oneNotes = await Note.findByIdAndRemove(id)
 
 	response.json(oneNotes);
   } catch (err) { next(err); }
