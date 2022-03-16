@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import uniqueValidator from "mongoose-unique-validator"
 
 const noteSchema = new mongoose.Schema({
   year: {
@@ -22,6 +23,7 @@ noteSchema.set('toJSON', {
     delete returnedObject.__v;
   },
 });
-const Note = mongoose.model('Note', noteSchema);
 
+noteSchema.plugin(uniqueValidator);
+const Note = mongoose.model('Note', noteSchema);
 export default Note;

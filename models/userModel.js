@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import uniqueValidator from "mongoose-unique-validator"
 
 const userSchema = new mongoose.Schema({
   name:{type:String, required:true},
@@ -20,6 +21,7 @@ userSchema.set('toJSON', {
 	delete returnedObject.password
   },
 });
+userSchema.plugin(uniqueValidator);
 const User = mongoose.model('User', userSchema);
 
 export default User;

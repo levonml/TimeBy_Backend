@@ -13,17 +13,20 @@ userRouter.get('/', async (request, response, next) => {
   });
 userRouter.get('/:id', async (request, response, next) => {
 	const id = request.params
-	//console.log("params ====", id.id);
   try {
 	const oneNotes = await User.findOne({userName:id.id}).populate('notes', {year:1, text:1, image:1});
 	response.json(oneNotes);
-	//console.log("resonseis", oneNotes
-	
   } catch (err) { next(err); }
 });
 userRouter.delete('/', async (request, response, next) => {
 	try {
 	  const ret = await User.deleteMany();
+	  response.status(204).json(ret);
+	} catch (error) { next(error); }
+  });
+  userRouter.delete('/:id', async (request, response, next) => {
+	try {
+	  const ret = await User.deleteOne({_id:request.params.id});
 	  response.status(204).json(ret);
 	} catch (error) { next(error); }
   });
