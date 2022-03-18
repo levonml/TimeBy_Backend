@@ -4,7 +4,7 @@ import cors from 'cors';
 
 import loginRouter from './controllers/loginRouter.js';
 import userRouter from './controllers/userRouter.js';
-import noteRouter from './controllers/noteRouter.js';
+import contentRouter from './controllers/contentRouter.js';
 import signupRouter from './controllers/signupRouter.js';
 import middleware from './utils/middlewares.js';
 import config from './utils/config.js';
@@ -28,7 +28,7 @@ app.use(express.json());
 app.use("/api/login", loginRouter)
 app.use("/api/users", userRouter)
 app.use("/api/signup", signupRouter)
-app.use("/api/notes", noteRouter)
+app.use("/api/content", contentRouter)
 app.use(express.static('./build'))
  const isProduction = process.env.NODE_ENV === 'production'
 console.log("check", isProduction);

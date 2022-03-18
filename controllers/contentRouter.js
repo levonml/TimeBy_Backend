@@ -1,37 +1,29 @@
 import express from "express";
-import jwt from 'jsonwebtoken'
+import middlewares from "../utils/middlewares.js";
 import User from '../models/userModel.js';
-import Note from "../models/noteModel.js";
-import { text } from "express";
 
-const noteRouter = express.Router()
+const contentRouter = express.Router()
 
-const getTokenFrom = request => {
-	const authorization = request.get('authorization')
-	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-	  return authorization.substring(7)
-	}
-	return null
-  }
-noteRouter.get('/', async (request, response, next) => {
+contentRouter.get('/:userName',  async (request, response, next) => {
+	const userName = request.params.userName
 	try {
-	  const allNotes = await Note.find({}).populate('user', { userName: 1, name: 1, surname: 1});
-	  response.json(allNotes);
+	  const user = await User.findOne({userName:userName})//.populate('user', { userName: 1, name: 1, surname: 1});
+	// console.log("user---", user) 
+	  response.json(user);
 	} catch (err) { next(err); }
   });
-   /* noteRouter.get('/:id', async (request, response, next) => {
-	  const id = request.params
-	  console.log("params ====", id.id);
+  contentRouter.put('/addYear/:userName', middlewares.tokenExtractor, async (request, response, next) => {
 	try {
-		console.log("resonseis before")
-	  const oneNotes = await Note.findById(id.id).populate('user', { userName: 1, name: 1, surname: 1});
-	  console.log("resonseis", oneNotes)
+		const userName = request.params.userName
+		const body = request.body
+		console.log("type of body", typeof body.year)
 
-	  response.json(oneNotes);
-	} catch (err) { next(err); }
-  });  */
- 
-  noteRouter.post('/', async (request, response, next) => {
+		const res = await User.findOneAndUpdate({'userName': userName},{$push:{'content': {year: body.year}}}, {new:true})
+		console.log("res", res)
+		response.status(201).json(res)
+	} catch (err) { next(err); console.log('hi from put "/:id" error')}
+  });
+  /*.post('/', async (request, response, next) => {
 	try {
 		console.log('hi from post "/"')
 		const body = request.body
@@ -53,27 +45,26 @@ noteRouter.get('/', async (request, response, next) => {
 	  await currentUser.updateOne({notes:updatedUser})
 	  response.status(201).json(savedNote);
 	} catch (err) { next(err); }
-});
-	noteRouter.put('/addtext/:yearId/:user/:year', async (request, response, next) => {
+});*/
+	contentRouter.put('/addtext/:user/:year',  middlewares.tokenExtractor, async (request, response, next) => {
+		const year = request.params.year
+		const user = request.params.user
+		const body = request.body
+		//const token = getTokenFrom(request)
+		//const decodedToken = jwt.verify(token, process.env.SECRET)
+		//if (!decodedToken.id) {
+		//  return response.status(401).json({ error: 'token missing or invalid' })
+		//}
+		const result = await User.find({$and: [{'userName': user}, {'content.year':year}]})
+			console.log("result frompppppppp", result)
+
 		try {
-			const year = request.params.year
-			const user = request.params.user
-			const yearId = request.params.yearId
-
-			const body = request.body
-
-			const token = getTokenFrom(request)
-			const decodedToken = jwt.verify(token, process.env.SECRET)
-			if (!decodedToken.id) {
-			  return response.status(401).json({ error: 'token missing or invalid' })
-			}
-
-			const res = await Note.findOneAndUpdate({'_id': yearId},{$push:{'text': body.text}}, {new:true})
+			const res = await User.findOneAndUpdate({'userName': user, 'content.year': year},{$push:{'content.text': body.text}}, {new:true})
 			console.log("result from backend", res)
 			response.status(201).json(res)
 		} catch (err) { next(err); console.log('hi from put "/:id" error')}
 	  });
-	  noteRouter.put('/removetext/:yearId/:key', async (request, response, next) => {
+	  /*noteRouter.put('/removetext/:yearId/:key', async (request, response, next) => {
 		const params = request.params
 		const key= params.key
 		const yearId =params.yearId
@@ -106,5 +97,5 @@ noteRouter.get('/', async (request, response, next) => {
 
 	response.json(oneNotes);
   } catch (err) { next(err); }
-})
-  export default noteRouter
+})*/
+  export default contentRouter

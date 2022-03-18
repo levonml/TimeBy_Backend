@@ -6,12 +6,17 @@ const userSchema = new mongoose.Schema({
   surname: {type:String, required:true},
   userName: { type: String, required: true, unique:true },
   password: { type: String, required: true},
-  notes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note'
-    }
-  ],
+  content: [
+	  {
+		year: {
+	  		type:String,
+			require: true,
+			unique: true
+		  },
+		text:[{type:String}]
+  	
+	}
+]
 });
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
