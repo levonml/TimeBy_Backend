@@ -13,9 +13,10 @@ const signupRouter = express.Router()
 		name : body.name,
 		surname : body.surname,
 		userName: body.userName,
-		password: passwordHash,
+		password: passwordHash
 	  });
 	  const savedUser = await newUser.save();
+	  console.log("savedUser", savedUser)
 	  response.status(201).json(savedUser);
 	} catch (err) { next(err); }
   });

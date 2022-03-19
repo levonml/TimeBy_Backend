@@ -13,11 +13,10 @@ contentRouter.get('/:userName',  async (request, response, next) => {
 	} catch (err) { next(err); }
   });
   contentRouter.put('/addYear/:userName', middlewares.tokenExtractor, async (request, response, next) => {
+	const userName = request.params.userName
+	const body = request.body
+	console.log(" body",  body)
 	try {
-		const userName = request.params.userName
-		const body = request.body
-		console.log("type of body", typeof body.year)
-
 		const res = await User.findOneAndUpdate({'userName': userName},{$push:{'content': {year: body.year}}}, {new:true})
 		console.log("res", res)
 		response.status(201).json(res)
@@ -55,13 +54,25 @@ contentRouter.get('/:userName',  async (request, response, next) => {
 		//if (!decodedToken.id) {
 		//  return response.status(401).json({ error: 'token missing or invalid' })
 		//}
-		const result = await User.find({$and: [{'userName': user}, {'content.year':year}]})
-			console.log("result frompppppppp", result)
-
 		try {
-			const res = await User.findOneAndUpdate({'userName': user, 'content.year': year},{$push:{'content.text': body.text}}, {new:true})
-			console.log("result from backend", res)
-			response.status(201).json(res)
+		const result = await User.find({'userName': user}, {content:1})//{$push:{'content.2.text': body.text}})
+		//const result = await User.find({content: {$elemMatch:{'year':year}}})
+
+		console.log("result frompppppppp", result)
+		//const result1 = await User.find({'userName': user})
+		const res1 = result[0].content.map(el => { 
+			if(el.year ===year){
+				el.text.push(body.text)}
+			return el
+			})
+		const res = await User.findOneAndUpdate({'userName': user},{$set:{'content': res1}},{new:true})
+		console.log("result111111", res1) 
+		console.log("resultUpdateeeed", res.content) 
+
+		//try {
+		//	const res = await User.find({'userName': user}, {new:true})
+		//	console.log("result from backend", res)
+			response.status(201).json(res.content)
 		} catch (err) { next(err); console.log('hi from put "/:id" error')}
 	  });
 	  /*noteRouter.put('/removetext/:yearId/:key', async (request, response, next) => {

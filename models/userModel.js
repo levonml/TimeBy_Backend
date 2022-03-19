@@ -11,10 +11,9 @@ const userSchema = new mongoose.Schema({
 		year: {
 	  		type:String,
 			require: true,
-			unique: true
 		  },
-		text:[{type:String}]
-  	
+		text:[{type:String}],
+		
 	}
 ]
 });
