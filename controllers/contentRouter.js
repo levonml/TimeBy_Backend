@@ -75,20 +75,30 @@ contentRouter.get('/:userName',  async (request, response, next) => {
 			response.status(201).json(res.content)
 		} catch (err) { next(err); console.log('hi from put "/:id" error')}
 	  });
-	  /*noteRouter.put('/removetext/:yearId/:key', async (request, response, next) => {
+	  contentRouter.put('/removetext/:user/:year/:index', async (request, response, next) => {
 		const params = request.params
-		const key= params.key
-		const yearId =params.yearId
+		const index= params.index
+		const year =params.year
+		const user = params.user
 		try {
-		const obj = await Note.findById(yearId)
-		const textModified = obj.text
-		textModified.splice(key, 1)
-		const oneNotes = await Note.findOneAndUpdate({_id:yearId}, {$set: {'text': textModified}}, {new: true})
+		const result = await User.find({'userName': user}, {content:1})
+		console.log("before filter array", result[0] )
+
+		const updatedText = result[0].content.map(el => {
+			if(el.year === year){
+				el.text.splice(index, 1)
+			}
+			return el
+		})
+		console.log("filtered text", updatedText)
+		//const textModified = filtered.text
+		//textModified.splice(index, 1)
+		const oneNotes = await User.findOneAndUpdate({'userName':user}, {$set: {'content': updatedText}}, {new: true})
 		console.log("deleted response =", oneNotes)
 		response.json(oneNotes);
 	  } catch (err) { next(err); }
 	})
-	  noteRouter.delete('/', async (request, response, next) => {
+	 /* noteRouter.delete('/', async (request, response, next) => {
 		try {
 		  const ret = await Note.deleteMany();
 		  response.status(204).json(ret);
