@@ -17,10 +17,25 @@ contentRouter.put(
   "/addYear/:userName",
   middlewares.tokenExtractor,
   async (request, response, next) => {
-    const userName = request.params.userName;
     const body = request.body;
+    const userName = request.params.userName;
+    const year = body.year;
+
     try {
+      console.log("year is", year);
+      /*      const userData = await User.find({ userName: userName }, { content: 1 });
+      const dublicateYear = userData[0].content.find((el) => el.year === year);
+      const userDataUpdated = !dublicateYear
+        ? userData
+        : userData[0].content.push({ year: year });
+
+      console.log("userData = ", userDataUpdated);
       const res = await User.findOneAndUpdate(
+        { userName: userName },
+        { $set: { content: userDataUpdated } },
+        { new: true }
+      ); */
+      const res = await User.updateOne(
         { userName: userName },
         { $push: { content: { year: body.year } } },
         { new: true }
@@ -28,7 +43,6 @@ contentRouter.put(
       response.status(201).json(res);
     } catch (err) {
       next(err);
-      console.log('hi from put "/:id" error');
     }
   }
 );
@@ -56,7 +70,6 @@ contentRouter.put(
       response.status(201).json(res.content);
     } catch (err) {
       next(err);
-      console.log('hi from put "/:id" error');
     }
   }
 );
@@ -69,22 +82,17 @@ contentRouter.put(
     const user = params.user;
     try {
       const result = await User.find({ userName: user }, { content: 1 });
-      console.log("before filter array", result[0]);
-
       const updatedText = result[0].content.map((el) => {
         if (el.year === year) {
           el.text.splice(index, 1);
         }
         return el;
       });
-      console.log("filtered text", updatedText);
       const oneNotes = await User.findOneAndUpdate(
         { userName: user },
         { $set: { content: updatedText } },
         { new: true }
       );
-
-      console.log("deleted response =", oneNotes);
       response.json(oneNotes);
     } catch (err) {
       next(err);
@@ -108,14 +116,12 @@ contentRouter.put(
   async (request, response, next) => {
     const user = request.params.user;
     const year = request.params.year;
-    console.log("delete this user", year);
     try {
       const res = await User.updateOne(
         { userName: user },
         { $pull: { content: { year: year } } },
         { new: true }
       );
-      console.log("Removed year is", res);
       response.json(res);
     } catch (err) {
       next(err);

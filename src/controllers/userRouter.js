@@ -8,7 +8,6 @@ const userRouter = express.Router();
 userRouter.get("/", async (request, response, next) => {
   try {
     const allUsers = await User.find({}); //.populate('notes', {year:1, text:1, image:1});
-    console.log("data from controller", allUsers);
     response.json(allUsers);
   } catch (err) {
     next(err);

@@ -16,7 +16,6 @@ signupRouter.post("/", async (request, response, next) => {
       password: passwordHash,
     });
     const savedUser = await newUser.save();
-    console.log("savedUser", savedUser);
     response.status(201).json(savedUser);
   } catch (err) {
     next(err);
