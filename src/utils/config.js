@@ -9,8 +9,8 @@ if (process.env.NODE_ENV === "test") {
 } else if (process.env.NODE_ENV === "developement") {
 	Mongodb_URI = process.env.MONGODB_URI;
 } */
- const MONGODB_URI = 
-	process.env.NODE_ENV === "test"
-		? process.env.Test_Mongodb_URI
-		: process.env.MONGODB_URI;  
+const MONGODB_URI =
+  process.env.NODE_ENV === "test"
+    ? process.env.Test_Mongodb_URI
+    : process.env.MONGODB_URI;
 export default { MONGODB_URI, PORT };

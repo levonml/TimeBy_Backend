@@ -1,21 +1,21 @@
-import mongoose from 'mongoose';
-import uniqueValidator from "mongoose-unique-validator"
+import mongoose from "mongoose";
+import uniqueValidator from "mongoose-unique-validator";
 
 const noteSchema = new mongoose.Schema({
   year: {
-	  type:String,
-	  required: true,
-	},
-  text: [{type: String}],
-  image: {type: String},
+    type: String,
+    required: true,
+  },
+  text: [{ type: String }],
+  image: { type: String },
   user: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
+      ref: "User",
+    },
   ],
 });
-noteSchema.set('toJSON', {
+noteSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -24,5 +24,5 @@ noteSchema.set('toJSON', {
 });
 
 noteSchema.plugin(uniqueValidator);
-const Note = mongoose.model('Note', noteSchema);
+const Note = mongoose.model("Note", noteSchema);
 export default Note;
