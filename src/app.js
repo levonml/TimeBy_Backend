@@ -34,7 +34,7 @@ const isProduction = process.env.NODE_ENV === "production";
 console.log("check", isProduction);
 isProduction &&
   app.get("*", function (request, response) {
-    response.sendFile(path.resolve(__dirname, "./build", "index.html"));
+    response.sendFile(path.resolve(__dirname, "../build", "index.html"));
   });
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
