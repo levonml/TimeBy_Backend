@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.affd2d80.css",
+    "main.css": "/static/css/main.71f42a46.css",
     "main.js": "/static/js/main.b7ac2f5c.js",
     "static/media/timeBySpace.jpg": "/static/media/timeBySpace.10e99f23a0fc8b1e5b86.jpg",
     "static/media/timebyLogo.png": "/static/media/timebyLogo.67fb3c235384c3b2381f.png",
     "index.html": "/index.html",
-    "main.affd2d80.css.map": "/static/css/main.affd2d80.css.map",
+    "main.71f42a46.css.map": "/static/css/main.71f42a46.css.map",
     "main.b7ac2f5c.js.map": "/static/js/main.b7ac2f5c.js.map"
   },
   "entrypoints": [
-    "static/css/main.affd2d80.css",
+    "static/css/main.71f42a46.css",
     "static/js/main.b7ac2f5c.js"
   ]
 }
