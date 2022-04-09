@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import uniqueValidator from "mongoose-unique-validator";
+import mongoose from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 
 const noteSchema = new mongoose.Schema({
   year: {
@@ -11,18 +11,18 @@ const noteSchema = new mongoose.Schema({
   user: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
   ],
-});
-noteSchema.set("toJSON", {
+})
+noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
   },
-});
+})
 
-noteSchema.plugin(uniqueValidator);
-const Note = mongoose.model("Note", noteSchema);
-export default Note;
+noteSchema.plugin(uniqueValidator)
+const Note = mongoose.model('Note', noteSchema)
+export default Note

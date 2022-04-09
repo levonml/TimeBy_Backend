@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import uniqueValidator from "mongoose-unique-validator";
+import mongoose from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -16,16 +16,16 @@ const userSchema = new mongoose.Schema({
       text: [{ type: String }],
     },
   ],
-});
-userSchema.set("toJSON", {
+})
+userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-    delete returnedObject.password;
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+    delete returnedObject.password
   },
-});
-userSchema.plugin(uniqueValidator);
-const User = mongoose.model("User", userSchema);
+})
+userSchema.plugin(uniqueValidator)
+const User = mongoose.model('User', userSchema)
 
-export default User;
+export default User
